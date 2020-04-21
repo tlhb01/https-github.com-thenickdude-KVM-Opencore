@@ -1,3 +1,20 @@
+# Files that will be built from source
+EFI/BOOT/BOOTx64.efi
+EFI/OC/Drivers/VBoxHfs.efi
+EFI/OC/Drivers/OpenRuntime.efi
+EFI/OC/Drivers/OpenCanopy.efi
+EFI/OC/Kexts/Lilu.kext
+EFI/OC/Kexts/AppleALC.kext
+EFI/OC/Kexts/WhateverGreen.kext
+EFI/OC/Kexts/VirtualSMC.kext
+EFI/OC/Tools/Shell.efi
+EFI/OC/Tools/ResetSystem.efi
+EFI/OC/Resources
+EFI/OC/OpenCore.efi
+OpenCore-Image/
+OpenCore.dmg
+OpenCore.dmg.gz
+
 # Prerequisites
 *.d
 

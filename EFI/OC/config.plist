@@ -49,15 +49,11 @@
 				<key>Enabled</key>
 				<false/>
 				<key>OemTableId</key>
-				<data>
-				Q3B1UG0AAAA=
-				</data>
+				<data>Q3B1UG0AAAA=</data>
 				<key>TableLength</key>
 				<integer>0</integer>
 				<key>TableSignature</key>
-				<data>
-				U1NEVA==
-				</data>
+				<data>U1NEVA==</data>
 			</dict>
 			<dict>
 				<key>All</key>
@@ -67,15 +63,11 @@
 				<key>Enabled</key>
 				<false/>
 				<key>OemTableId</key>
-				<data>
-				Q3B1MElzdAA=
-				</data>
+				<data>Q3B1MElzdAA=</data>
 				<key>TableLength</key>
 				<integer>0</integer>
 				<key>TableSignature</key>
-				<data>
-				U1NEVA==
-				</data>
+				<data>U1NEVA==</data>
 			</dict>
 		</array>
 		<key>Patch</key>
@@ -88,31 +80,23 @@
 				<key>Enabled</key>
 				<false/>
 				<key>Find</key>
-				<data>
-				X1ExMQ==
-				</data>
+				<data>X1ExMQ==</data>
 				<key>Limit</key>
 				<integer>0</integer>
 				<key>Mask</key>
-				<data>
-				</data>
+				<data></data>
 				<key>OemTableId</key>
-				<data>
-				</data>
+				<data></data>
 				<key>Replace</key>
-				<data>
-				WFExMQ==
-				</data>
+				<data>WFExMQ==</data>
 				<key>ReplaceMask</key>
-				<data>
-				</data>
+				<data></data>
 				<key>Skip</key>
 				<integer>0</integer>
 				<key>TableLength</key>
 				<integer>0</integer>
 				<key>TableSignature</key>
-				<data>
-				</data>
+				<data></data>
 			</dict>
 			<dict>
 				<key>Comment</key>
@@ -122,31 +106,23 @@
 				<key>Enabled</key>
 				<false/>
 				<key>Find</key>
-				<data>
-				X1ExMg==
-				</data>
+				<data>X1ExMg==</data>
 				<key>Limit</key>
 				<integer>0</integer>
 				<key>Mask</key>
-				<data>
-				</data>
+				<data></data>
 				<key>OemTableId</key>
-				<data>
-				</data>
+				<data></data>
 				<key>Replace</key>
-				<data>
-				WFExMg==
-				</data>
+				<data>WFExMg==</data>
 				<key>ReplaceMask</key>
-				<data>
-				</data>
+				<data></data>
 				<key>Skip</key>
 				<integer>0</integer>
 				<key>TableLength</key>
 				<integer>0</integer>
 				<key>TableSignature</key>
-				<data>
-				</data>
+				<data></data>
 			</dict>
 		</array>
 		<key>Quirks</key>
@@ -196,7 +172,7 @@
 			<key>RebuildAppleMemoryMap</key>
 			<false/>
 			<key>SetupVirtualMap</key>
-			<true/>
+			<false/>
 			<key>SignalAppleOS</key>
 			<false/>
 			<key>SyncRuntimePermissions</key>
@@ -235,7 +211,7 @@
 				<key>BundlePath</key>
 				<string>Lilu.kext</string>
 				<key>Comment</key>
-				<string></string>
+				<string>Patch engine</string>
 				<key>Enabled</key>
 				<true/>
 				<key>ExecutablePath</key>
@@ -251,8 +227,8 @@
 				<key>BundlePath</key>
 				<string>VirtualSMC.kext</string>
 				<key>Comment</key>
-				<string></string>
-				<key>Enabled</key>
+				<string>SMC emulator</string>
+				<key>Disabled</key>
 				<true/>
 				<key>ExecutablePath</key>
 				<string>Contents/MacOS/VirtualSMC</string>
@@ -267,7 +243,7 @@
 				<key>BundlePath</key>
 				<string>WhateverGreen.kext</string>
 				<key>Comment</key>
-				<string></string>
+				<string>Video patches</string>
 				<key>Enabled</key>
 				<true/>
 				<key>ExecutablePath</key>
@@ -283,7 +259,7 @@
 				<key>BundlePath</key>
 				<string>AppleALC.kext</string>
 				<key>Comment</key>
-				<string></string>
+				<string>Audio patches</string>
 				<key>Enabled</key>
 				<true/>
 				<key>ExecutablePath</key>
@@ -442,40 +418,6 @@
 				<key>Skip</key>
 				<integer>0</integer>
 			</dict>
-			<dict>
-				<key>Base</key>
-				<string></string>
-				<key>Comment</key>
-				<string>Ranem board-id to board-ix</string>
-				<key>Count</key>
-				<integer>1</integer>
-				<key>Enabled</key>
-				<true/>
-				<key>Find</key>
-				<data>
-				Ym9hcmQtaWQ=
-				</data>
-				<key>Identifier</key>
-				<string>com.apple.driver.AppleGraphicsDevicePolicy</string>
-				<key>Limit</key>
-				<integer>0</integer>
-				<key>Mask</key>
-				<data>
-				</data>
-				<key>MaxKernel</key>
-				<string>19.99.99</string>
-				<key>MinKernel</key>
-				<string>19.0.0</string>
-				<key>Replace</key>
-				<data>
-				Ym9hcmQtaXg=
-				</data>
-				<key>ReplaceMask</key>
-				<data>
-				</data>
-				<key>Skip</key>
-				<integer>0</integer>
-			</dict>
 		</array>
 		<key>Quirks</key>
 		<dict>
@@ -491,6 +433,8 @@
 			<false/>
 			<key>DisableIoMapper</key>
 			<false/>
+			<key>DisableRtcChecksum</key>
+			<false/>
 			<key>DummyPowerManagement</key>
 			<true/>
 			<key>ExternalDiskIcons</key>
@@ -500,7 +444,7 @@
 			<key>LapicKernelPanic</key>
 			<false/>
 			<key>PanicNoKextDump</key>
-			<true/>
+			<false/>
 			<key>PowerTimeoutKernelPanic</key>
 			<false/>
 			<key>ThirdPartyDrives</key>
@@ -524,19 +468,19 @@
 			<key>HideSelf</key>
 			<true/>
 			<key>PickerAttributes</key>
-			<integer>0</integer>
+			<integer>1</integer>
 			<key>PickerAudioAssist</key>
 			<false/>
 			<key>PickerMode</key>
-			<string>Builtin</string>
+			<string>External</string>
 			<key>PollAppleHotKeys</key>
 			<true/>
 			<key>ShowPicker</key>
-			<false/>
+			<true/>
 			<key>TakeoffDelay</key>
-			<integer>10000</integer>
+			<integer>0</integer>
 			<key>Timeout</key>
-			<integer>10</integer>
+			<integer>5</integer>
 		</dict>
 		<key>Debug</key>
 		<dict>
@@ -549,7 +493,7 @@
 			<key>DisplayLevel</key>
 			<integer>2147483650</integer>
 			<key>Target</key>
-			<integer>19</integer>
+			<integer>3</integer>
 		</dict>
 		<key>Entries</key>
 		<array/>
@@ -566,7 +510,7 @@
 			<key>HaltLevel</key>
 			<integer>2147483648</integer>
 			<key>ScanPolicy</key>
-			<integer>257</integer>
+			<integer>2032387</integer>
 			<key>Vault</key>
 			<string>Optional</string>
 		</dict>
@@ -580,7 +524,7 @@
 				<key>Comment</key>
 				<string>Not signed for security reasons</string>
 				<key>Enabled</key>
-				<false/>
+				<true/>
 				<key>Name</key>
 				<string>UEFI Shell</string>
 				<key>Path</key>
@@ -588,17 +532,17 @@
 			</dict>
 			<dict>
 				<key>Arguments</key>
-				<string></string>
+				<string>Shutdown</string>
 				<key>Auxiliary</key>
-				<false/>
+				<true/>
 				<key>Comment</key>
-				<string>Memory testing utility</string>
+				<string>Perform shutdown</string>
 				<key>Enabled</key>
-				<false/>
+				<true/>
 				<key>Name</key>
-				<string>memcheck</string>
+				<string>Shutdown</string>
 				<key>Path</key>
-				<string>memcheck/memcheck.efi</string>
+				<string>ResetSystem.efi</string>
 			</dict>
 		</array>
 	</dict>
@@ -609,34 +553,25 @@
 			<key>4D1EDE05-38C7-4A6A-9CC6-4BCCA8B38C14</key>
 			<dict>
 				<key>DefaultBackgroundColor</key>
-				<data>
-				AAAAAA==
-				</data>
+				<data>AAAAAA==</data>
 				<key>UIScale</key>
-				<data>
-				Ag==
-				</data>
+				<data>AQ==</data>
+			</dict>
+			<key>4D1FDA02-38C7-4A6A-9CC6-4BCCA8B30102</key>
+			<dict>
+				<key>rtc-blacklist</key>
+				<data></data>
 			</dict>
 			<key>7C436110-AB2A-4BBB-A880-FE41995C9F82</key>
 			<dict>
 				<key>SystemAudioVolume</key>
-				<data>
-				Rg==
-				</data>
+				<data>Rg==</data>
 				<key>boot-args</key>
-				<string>keepsyms=1 debug=0x100</string>
+				<string>keepsyms=1</string>
 				<key>csr-active-config</key>
-				<data>
-				5wMAAA==
-				</data>
-				<key>nvda_drv</key>
-				<data>
-				MQ==
-				</data>
+				<data>AAAAAA==</data>
 				<key>prev-lang:kbd</key>
-				<data>
-				emgtSGFuczoyNTI=
-				</data>
+				<data>ZW4tVVM6MA==</data>
 			</dict>
 		</dict>
 		<key>Block</key>
@@ -645,6 +580,10 @@
 			<array>
 				<string>UIScale</string>
 				<string>DefaultBackgroundColor</string>
+			</array>
+			<key>4D1FDA02-38C7-4A6A-9CC6-4BCCA8B30102</key>
+			<array>
+				<string>rtc-blacklist</string>
 			</array>
 			<key>7C436110-AB2A-4BBB-A880-FE41995C9F82</key>
 			<array>
@@ -690,6 +629,8 @@
 		<true/>
 		<key>Generic</key>
 		<dict>
+			<key>AdviseWindows</key>
+			<false/>
 			<key>MLB</key>
 			<string>C02717306J9JG361M</string>
 			<key>ROM</key>
@@ -725,9 +666,9 @@
 			<key>JumpstartHotPlug</key>
 			<false/>
 			<key>MinDate</key>
-			<integer>0</integer>
+			<integer>-1</integer>
 			<key>MinVersion</key>
-			<integer>0</integer>
+			<integer>-1</integer>
 		</dict>
 		<key>Audio</key>
 		<dict>
@@ -752,6 +693,7 @@
 		<array>
 			<string>OpenRuntime.efi</string>
 			<string>VBoxHfs.efi</string>
+			<string>OpenCanopy.efi</string>
 		</array>
 		<key>Input</key>
 		<dict>
@@ -766,11 +708,11 @@
 			<key>KeySupportMode</key>
 			<string>Auto</string>
 			<key>KeySwap</key>
-			<true/>
+			<false/>
 			<key>PointerSupport</key>
 			<false/>
 			<key>PointerSupportMode</key>
-			<string></string>
+			<string>ASUS</string>
 			<key>TimerResolution</key>
 			<integer>50000</integer>
 		</dict>
@@ -785,7 +727,7 @@
 			<key>DirectGopRendering</key>
 			<false/>
 			<key>IgnoreTextInGraphics</key>
-			<true/>
+			<false/>
 			<key>ProvideConsoleGop</key>
 			<true/>
 			<key>ReconnectOnResChange</key>
@@ -793,13 +735,13 @@
 			<key>ReplaceTabWithSpace</key>
 			<false/>
 			<key>Resolution</key>
-			<string>Max</string>
+			<string>1920x1080@32</string>
 			<key>SanitiseClearScreen</key>
 			<false/>
 			<key>TextRenderer</key>
 			<string>BuiltinGraphics</string>
 		</dict>
-		<key>Protocols</key>
+		<key>ProtocolOverrides</key>
 		<dict>
 			<key>AppleAudio</key>
 			<false/>
@@ -813,8 +755,10 @@
 			<false/>
 			<key>AppleKeyMap</key>
 			<false/>
+			<key>AppleRtcRam</key>
+			<false/>
 			<key>AppleSmcIo</key>
-			<true/>
+			<false/>
 			<key>AppleUserInterfaceTheme</key>
 			<false/>
 			<key>DataHub</key>
