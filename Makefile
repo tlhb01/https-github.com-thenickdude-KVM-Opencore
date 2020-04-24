@@ -130,6 +130,10 @@ EFI/OC/Tools/Shell.efi : src/OpenCorePkg/Binaries/$(OPENCORE_MODE)/Shell.efi
 	mkdir -p EFI/OC/Tools
 	cp -a $< $@
 
+EFI/OC/Tools/ResetSystem.efi : src/OpenCorePkg/Binaries/$(OPENCORE_MODE)/ResetSystem.efi
+	mkdir -p EFI/OC/Tools
+	cp -a $< $@
+
 EFI/OC/Drivers/OpenCanopy.efi : src/OpenCorePkg/Binaries/$(OPENCORE_MODE)/OpenCanopy.efi
 	mkdir -p EFI/OC/Drivers
 	cp -a $< $@
