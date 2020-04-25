@@ -4,6 +4,7 @@
 [submodule "src/OpenCorePkg"]
 	path = src/OpenCorePkg
 	url = https://github.com/acidanthera/OpenCorePkg.git
+	ignore = dirty
 [submodule "src/AppleSupportPkg"]
 	path = src/AppleSupportPkg
 	url = https://github.com/acidanthera/AppleSupportPkg.git
