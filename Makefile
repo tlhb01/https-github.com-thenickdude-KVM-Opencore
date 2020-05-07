@@ -18,6 +18,8 @@ MISC= \
 	EFI/OC/OpenCore.efi \
 	EFI/OC/Resources
 
+EFI_FILES=$(KEXTS) $(DRIVERS) $(TOOLS) $(MISC) EFI/OC/config.plist
+
 SUBMODULES = \
 	src/AppleALC \
 	src/Lilu \
@@ -32,13 +34,13 @@ OPENCORE_MODE=RELEASE
 
 .DUMMY : all clean dist
 
-all : $(SUBMODULES) $(MISC) $(KEXTS) $(DRIVERS) $(TOOLS)
+all : $(SUBMODULES) $(EFI_FILES)
 
 dist : OpenCore.dmg.gz OpenCoreEFIFolder.zip
 
 # Create OpenCore disk image:
 
-OpenCore.dmg : Makefile
+OpenCore.dmg : Makefile $(EFI_FILES)
 	rm -f OpenCore.dmg
 	hdiutil create -layout GPTSPUD -partitionType EFI -fs "FAT32" -megabytes 150 -volname EFI OpenCore.dmg
 	mkdir -p OpenCore-Image
@@ -47,7 +49,7 @@ OpenCore.dmg : Makefile
 	cp -a EFI OpenCore-Image/
 	hdiutil detach -force OpenCore-Image
 
-OpenCoreEFIFolder.zip : Makefile
+OpenCoreEFIFolder.zip : Makefile $(EFI_FILES)
 	rm -f $@
 	zip -r $@ EFI
 
@@ -150,4 +152,4 @@ EFI/BOOT/ EFI/OC/Drivers/ EFI/OC/Tools/ :
 	mkdir $@
 
 clean :
-	rm -rf OpenCore.dmg OpenCoreEFIFolder.zip src/Lilu/build src/WhateverGreen/build src/OpenCorePkg/Binaries src/AppleALC/build $(KEXTS) $(DRIVERS) $(MISC)
+	rm -rf OpenCore.dmg OpenCoreEFIFolder.zip src/Lilu/build src/WhateverGreen/build src/OpenCorePkg/Binaries src/AppleALC/build $(KEXTS) $(DRIVERS) $(TOOLS) $(MISC)
