@@ -49,6 +49,10 @@ OpenCore.dmg : Makefile $(EFI_FILES)
 	cp -a EFI OpenCore-Image/
 	hdiutil detach -force OpenCore-Image
 
+# Not actually an ISO, but useful for making it usable in Proxmox's ISO picker
+OpenCore.iso : OpenCore.dmg
+	cp $< $@
+
 OpenCoreEFIFolder.zip : Makefile $(EFI_FILES)
 	rm -f $@
 	zip -r $@ EFI
