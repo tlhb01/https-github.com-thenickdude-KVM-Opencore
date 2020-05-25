@@ -25,18 +25,21 @@ SUBMODULES = \
 	src/Lilu \
 	src/WhateverGreen \
 	src/OpenCorePkg \
-	src/AppleSupportPkg \
 	src/VirtualSMC \
 	src/OcBinaryData
 
 # Either DEBUG or RELEASE
 OPENCORE_MODE=RELEASE
 
+OPENCORE_UDK_BUILD_DIR=src/OpenCorePkg/UDK/Build/OpenCorePkg/$(OPENCORE_MODE)_XCODE5/X64
+
 .DUMMY : all clean dist
 
+# Avoid submodules having their own directories as a dependency by moving that dependency to the top here:
+# (avoids rebuilding deps after they touch their directories during build)
 all : $(SUBMODULES) $(EFI_FILES)
 
-dist : OpenCore.dmg.gz OpenCoreEFIFolder.zip
+dist : $(SUBMODULES) OpenCore.dmg.gz OpenCoreEFIFolder.zip OpenCore.iso.gz
 
 # Create OpenCore disk image:
 
@@ -104,48 +107,44 @@ src/VirtualSMC/Lilu.kext : src/Lilu/build/Debug/Lilu.kext
 
 # OpenCore:
 
-EFI/OC/OpenCore.efi : src/OpenCorePkg/Binaries/$(OPENCORE_MODE)/OpenCore.efi
+EFI/OC/OpenCore.efi : $(OPENCORE_UDK_BUILD_DIR)/OpenCore.efi
 	cp -a $< $@
 
-EFI/OC/Drivers/OpenRuntime.efi : src/OpenCorePkg/Binaries/$(OPENCORE_MODE)/OpenRuntime.efi
+EFI/OC/Drivers/OpenRuntime.efi : $(OPENCORE_UDK_BUILD_DIR)/OpenRuntime.efi
 	mkdir -p EFI/OC/Drivers
 	cp -a $< $@
 
-EFI/BOOT/BOOTx64.efi : src/OpenCorePkg/Binaries/$(OPENCORE_MODE)/BOOTx64.efi
+EFI/OC/Drivers/VBoxHfs.efi : $(OPENCORE_UDK_BUILD_DIR)/VBoxHfs.efi
+	mkdir -p EFI/OC/Drivers
+	cp -a $< $@
+
+EFI/BOOT/BOOTx64.efi : $(OPENCORE_UDK_BUILD_DIR)/BOOTx64.efi
 	mkdir -p EFI/BOOT
 	cp -a $< $@
 
-src/OpenCorePkg/Binaries/$(OPENCORE_MODE)/OpenCore.efi src/OpenCorePkg/Binaries/$(OPENCORE_MODE)/OpenRuntime.efi \
-src/OpenCorePkg/Binaries/$(OPENCORE_MODE)/BOOTx64.efi src/OpenCorePkg/Binaries/$(OPENCORE_MODE)/Shell.efi \
+$(OPENCORE_UDK_BUILD_DIR)/OpenCore.efi $(OPENCORE_UDK_BUILD_DIR)/OpenRuntime.efi \
+$(OPENCORE_UDK_BUILD_DIR)/BOOTx64.efi $(OPENCORE_UDK_BUILD_DIR)/Shell.efi \
+$(OPENCORE_UDK_BUILD_DIR)/ResetSystem.efi $(OPENCORE_UDK_BUILD_DIR)/OpenCanopy.efi \
+$(OPENCORE_UDK_BUILD_DIR)/VBoxHfs.efi \
  :
-	sed -i'.original' -e 's/^ARCHS=(X64 IA32)$$/ARCHS=(X64)/' src/OpenCorePkg/macbuild.tool
-	cd src/OpenCorePkg && ./macbuild.tool --skip-package
-
-# VBoxHfs:
-
-EFI/OC/Drivers/VBoxHfs.efi : src/AppleSupportPkg/Binaries/RELEASE/VBoxHfs.efi
-	mkdir -p EFI/OC/Drivers
-	cp -a $< $@
-
-src/AppleSupportPkg/Binaries/RELEASE/VBoxHfs.efi :
-	cd src/AppleSupportPkg && ./macbuild.tool --skip-package
+	cd src/OpenCorePkg && ARCHS=X64 ./build_oc.tool --skip-package $(OPENCORE_MODE)
 
 # Tools
 
-EFI/OC/Tools/Shell.efi : src/OpenCorePkg/Binaries/$(OPENCORE_MODE)/Shell.efi
+EFI/OC/Tools/Shell.efi : $(OPENCORE_UDK_BUILD_DIR)/Shell.efi
 	mkdir -p EFI/OC/Tools
 	cp -a $< $@
 
-EFI/OC/Tools/ResetSystem.efi : src/OpenCorePkg/Binaries/$(OPENCORE_MODE)/ResetSystem.efi
+EFI/OC/Tools/ResetSystem.efi : $(OPENCORE_UDK_BUILD_DIR)/ResetSystem.efi
 	mkdir -p EFI/OC/Tools
 	cp -a $< $@
 
-EFI/OC/Drivers/OpenCanopy.efi : src/OpenCorePkg/Binaries/$(OPENCORE_MODE)/OpenCanopy.efi
+EFI/OC/Drivers/OpenCanopy.efi : $(OPENCORE_UDK_BUILD_DIR)/OpenCanopy.efi
 	mkdir -p EFI/OC/Drivers
 	cp -a $< $@
 
 EFI/OC/Resources : src/OcBinaryData/Resources
-	cp -a $< $@
+	cp -a $< EFI/OC/
 
 # Fetch submodules:
 
@@ -156,4 +155,5 @@ EFI/BOOT/ EFI/OC/Drivers/ EFI/OC/Tools/ :
 	mkdir $@
 
 clean :
-	rm -rf OpenCore.dmg OpenCoreEFIFolder.zip src/Lilu/build src/WhateverGreen/build src/OpenCorePkg/Binaries src/AppleALC/build $(KEXTS) $(DRIVERS) $(TOOLS) $(MISC)
+	rm -rf OpenCore.dmg OpenCoreEFIFolder.zip OpenCore-Image/ src/Lilu/build src/WhateverGreen/build src/OpenCorePkg/UDK/Build \
+		src/AppleALC/build $(KEXTS) $(DRIVERS) $(TOOLS) $(MISC)
