@@ -33,7 +33,7 @@ OPENCORE_MODE=RELEASE
 
 OPENCORE_UDK_BUILD_DIR=src/OpenCorePkg/UDK/Build/OpenCorePkg/$(OPENCORE_MODE)_XCODE5/X64
 
-.DUMMY : all clean dist
+.DUMMY : all very-clean clean dist
 
 # Avoid submodules having their own directories as a dependency by moving that dependency to the top here:
 # (avoids rebuilding deps after they touch their directories during build)
@@ -153,6 +153,10 @@ $(SUBMODULES) :
 
 EFI/BOOT/ EFI/OC/Drivers/ EFI/OC/Tools/ :
 	mkdir $@
+
+# Also check out the UDK and its dependencies from scratch again - useful when build errors occur in UDK
+very-clean : clean
+	rm -rf src/OpenCorePkg/UDK
 
 clean :
 	rm -rf OpenCore.dmg OpenCoreEFIFolder.zip OpenCore-Image/ src/Lilu/build src/WhateverGreen/build src/OpenCorePkg/UDK/Build \
