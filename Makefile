@@ -101,6 +101,7 @@ EFI/OC/Kexts/VirtualSMC.kext : src/VirtualSMC/build/Release/VirtualSMC.kext
 
 src/VirtualSMC/build/Release/VirtualSMC.kext : src/VirtualSMC/Lilu.kext
 	cd src/VirtualSMC && xcodebuild -configuration Release
+	touch $@
 
 src/VirtualSMC/Lilu.kext : src/Lilu/build/Debug/Lilu.kext
 	ln -s ../Lilu/build/Debug/Lilu.kext $@
@@ -118,12 +119,12 @@ EFI/OC/Drivers/VBoxHfs.efi : $(OPENCORE_UDK_BUILD_DIR)/VBoxHfs.efi
 	mkdir -p EFI/OC/Drivers
 	cp -a $< $@
 
-EFI/BOOT/BOOTx64.efi : $(OPENCORE_UDK_BUILD_DIR)/BOOTx64.efi
+EFI/BOOT/BOOTx64.efi : $(OPENCORE_UDK_BUILD_DIR)/Bootstrap.efi
 	mkdir -p EFI/BOOT
 	cp -a $< $@
 
 $(OPENCORE_UDK_BUILD_DIR)/OpenCore.efi $(OPENCORE_UDK_BUILD_DIR)/OpenRuntime.efi \
-$(OPENCORE_UDK_BUILD_DIR)/BOOTx64.efi $(OPENCORE_UDK_BUILD_DIR)/Shell.efi \
+$(OPENCORE_UDK_BUILD_DIR)/Bootstrap.efi $(OPENCORE_UDK_BUILD_DIR)/Shell.efi \
 $(OPENCORE_UDK_BUILD_DIR)/ResetSystem.efi $(OPENCORE_UDK_BUILD_DIR)/OpenCanopy.efi \
 $(OPENCORE_UDK_BUILD_DIR)/VBoxHfs.efi \
  :

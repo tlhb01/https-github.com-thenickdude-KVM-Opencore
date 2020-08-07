@@ -12,8 +12,8 @@ EFI/OC/Tools/ResetSystem.efi
 EFI/OC/Resources
 EFI/OC/OpenCore.efi
 OpenCore-Image/
-OpenCore.dmg
-OpenCore.dmg.gz
+OpenCore.dmg*
+OpenCore.iso*
 OpenCoreEFIFolder.zip
 
 # Prerequisites
