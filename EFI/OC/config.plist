@@ -351,6 +351,8 @@
 		</array>
 		<key>Emulate</key>
 		<dict>
+			<key>DummyPowerManagement</key>
+			<true/>
 			<key>Cpuid1Data</key>
 			<data>
 			VAYFAAAAAAAAAAAAAAAAAA==
@@ -359,6 +361,10 @@
 			<data>
 			////AAAAAAAAAAAAAAAAAA==
 			</data>
+			<key>MaxKernel</key>
+			<string></string>
+			<key>MinKernel</key>
+			<string></string>
 		</dict>
 		<key>Force</key>
 		<array>
@@ -368,7 +374,7 @@
 				<key>BundlePath</key>
 				<string>System/Library/Extensions/IONetworkingFamily.kext</string>
 				<key>Comment</key>
-				<string>Patch engine</string>
+				<string></string>
 				<key>Enabled</key>
 				<false/>
 				<key>Identifier</key>
@@ -474,13 +480,15 @@
 			<true/>
 			<key>DisableRtcChecksum</key>
 			<false/>
-			<key>DummyPowerManagement</key>
-			<true/>
+			<key>ExtendBTFeatureFlags</key>
+			<false/>
 			<key>ExternalDiskIcons</key>
 			<false/>
 			<key>IncreasePciBarSize</key>
 			<false/>
 			<key>LapicKernelPanic</key>
+			<false/>
+			<key>LegacyCommpage</key>
 			<false/>
 			<key>PanicNoKextDump</key>
 			<false/>
@@ -699,12 +707,14 @@
 		<dict>
 			<key>AdviseWindows</key>
 			<false/>
+			<key>SystemMemoryStatus</key>
+			<string>Auto</string>
 			<key>MLB</key>
 			<string>C02717306J9JG361M</string>
+			<key>ProcessorType</key>
+			<integer>0</integer>
 			<key>ROM</key>
-			<data>
-			m7zhIYfl
-			</data>
+			<data>m7zhIYfl</data>
 			<key>SpoofVendor</key>
 			<true/>
 			<key>SystemProductName</key>

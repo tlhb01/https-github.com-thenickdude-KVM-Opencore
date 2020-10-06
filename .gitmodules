@@ -20,3 +20,6 @@
 [submodule "src/OcBinaryData"]
 	path = src/OcBinaryData
 	url = https://github.com/acidanthera/OcBinaryData.git
+[submodule "src/MacKernelSDK"]
+	path = src/MacKernelSDK
+	url = https://github.com/acidanthera/MacKernelSDK.git

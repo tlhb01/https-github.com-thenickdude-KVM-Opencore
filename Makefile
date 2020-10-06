@@ -26,7 +26,11 @@ SUBMODULES = \
 	src/WhateverGreen \
 	src/OpenCorePkg \
 	src/VirtualSMC \
-	src/OcBinaryData
+	src/OcBinaryData \
+	src/MacKernelSDK
+
+# Set me to include the version number in the packaged filenames
+RELEASE_VERSION ?= master
 
 # Either DEBUG or RELEASE
 OPENCORE_MODE=RELEASE
@@ -39,24 +43,24 @@ OPENCORE_UDK_BUILD_DIR=src/OpenCorePkg/UDK/Build/OpenCorePkg/$(OPENCORE_MODE)_XC
 # (avoids rebuilding deps after they touch their directories during build)
 all : $(SUBMODULES) $(EFI_FILES)
 
-dist : $(SUBMODULES) OpenCore.dmg.gz OpenCoreEFIFolder.zip OpenCore.iso.gz
+dist : $(SUBMODULES) OpenCore-$(RELEASE_VERSION).dmg.gz OpenCoreEFIFolder-$(RELEASE_VERSION).zip OpenCore-$(RELEASE_VERSION).iso.gz
 
 # Create OpenCore disk image:
 
-OpenCore.dmg : Makefile $(EFI_FILES)
-	rm -f OpenCore.dmg
-	hdiutil create -layout GPTSPUD -partitionType EFI -fs "FAT32" -megabytes 150 -volname EFI OpenCore.dmg
+OpenCore-$(RELEASE_VERSION).dmg : Makefile $(EFI_FILES)
+	rm -f $@
+	hdiutil create -layout GPTSPUD -partitionType EFI -fs "FAT32" -megabytes 150 -volname EFI $@
 	mkdir -p OpenCore-Image
-	DEV_NAME=$$(hdiutil attach -nomount -plist OpenCore.dmg | xpath "/plist/dict/array/dict/key[text()='content-hint']/following-sibling::string[1][text()='EFI']/../key[text()='dev-entry']/following-sibling::string[1]/text()" 2> /dev/null) && \
+	DEV_NAME=$$(hdiutil attach -nomount -plist $@ | xpath "/plist/dict/array/dict/key[text()='content-hint']/following-sibling::string[1][text()='EFI']/../key[text()='dev-entry']/following-sibling::string[1]/text()" 2> /dev/null) && \
 		mount -tmsdos "$$DEV_NAME" OpenCore-Image
 	cp -a EFI OpenCore-Image/
 	hdiutil detach -force OpenCore-Image
 
 # Not actually an ISO, but useful for making it usable in Proxmox's ISO picker
-OpenCore.iso : OpenCore.dmg
+OpenCore-$(RELEASE_VERSION).iso : OpenCore-$(RELEASE_VERSION).dmg
 	cp $< $@
 
-OpenCoreEFIFolder.zip : Makefile $(EFI_FILES)
+OpenCoreEFIFolder-$(RELEASE_VERSION).zip : Makefile $(EFI_FILES)
 	rm -f $@
 	zip -r $@ EFI
 
@@ -68,44 +72,48 @@ OpenCoreEFIFolder.zip : Makefile $(EFI_FILES)
 EFI/OC/Kexts/AppleALC.kext : src/AppleALC/build/Release/AppleALC.kext
 	cp -a $< $@
 
-src/AppleALC/build/Release/AppleALC.kext : src/AppleALC src/AppleALC/Lilu.kext
+src/AppleALC/build/Release/AppleALC.kext : src/AppleALC src/AppleALC/Lilu.kext src/AppleALC/MacKernelSDK
 	cd src/AppleALC && xcodebuild -configuration Release
-
-src/AppleALC/Lilu.kext : src/Lilu/build/Debug/Lilu.kext
-	ln -s ../Lilu/build/Debug/Lilu.kext $@
-
-# Lilu:
-
-EFI/OC/Kexts/Lilu.kext : src/Lilu/build/Release/Lilu.kext
-	cp -a $< $@
-
-src/Lilu/build/Release/Lilu.kext src/Lilu/build/Debug/Lilu.kext :
-	cd src/Lilu && xcodebuild -configuration Debug
-	cd src/Lilu && xcodebuild -configuration Release
 
 # WhateverGreen:
 
 EFI/OC/Kexts/WhateverGreen.kext : src/WhateverGreen/build/Release/WhateverGreen.kext
 	cp -a $< $@
 
-src/WhateverGreen/build/Release/WhateverGreen.kext : src/WhateverGreen src/WhateverGreen/Lilu.kext
+src/WhateverGreen/build/Release/WhateverGreen.kext : src/WhateverGreen src/WhateverGreen/Lilu.kext src/WhateverGreen/MacKernelSDK
 	cd src/WhateverGreen && xcodebuild -configuration Release
-
-src/WhateverGreen/Lilu.kext : src/Lilu/build/Debug/Lilu.kext
-	ln -s ../Lilu/build/Debug/Lilu.kext $@
 
 # VirtualSMC:
 
 EFI/OC/Kexts/VirtualSMC.kext : src/VirtualSMC/build/Release/VirtualSMC.kext
 	cp -a $< $@
 
-src/VirtualSMC/build/Release/VirtualSMC.kext : src/VirtualSMC/Lilu.kext
+src/VirtualSMC/build/Release/VirtualSMC.kext : src/VirtualSMC/Lilu.kext src/VirtualSMC/MacKernelSDK
 	cd src/VirtualSMC && xcodebuild -configuration Release
 	touch $@
 
+# Lilu:
+
+EFI/OC/Kexts/Lilu.kext : src/Lilu/build/Release/Lilu.kext
+	cp -a $< $@
+
+src/Lilu/build/Release/Lilu.kext src/Lilu/build/Debug/Lilu.kext : 
+	cd src/Lilu && xcodebuild -configuration Debug
+	cd src/Lilu && xcodebuild -configuration Release
+
+src/WhateverGreen/Lilu.kext \
+src/AppleALC/Lilu.kext \
 src/VirtualSMC/Lilu.kext : src/Lilu/build/Debug/Lilu.kext
 	ln -s ../Lilu/build/Debug/Lilu.kext $@
 
+# MacKernelSDK:
+
+src/Lilu/MacKernelSDK \
+src/WhateverGreen/MacKernelSDK \
+src/AppleALC/MacKernelSDK \
+src/VirtualSMC/MacKernelSDK : src/MacKernelSDK
+	ln -s ../MacKernelSDK $@
+	
 # OpenCore:
 
 EFI/OC/OpenCore.efi : $(OPENCORE_UDK_BUILD_DIR)/OpenCore.efi
@@ -160,5 +168,5 @@ very-clean : clean
 	rm -rf src/OpenCorePkg/UDK
 
 clean :
-	rm -rf OpenCore.dmg OpenCoreEFIFolder.zip OpenCore-Image/ src/Lilu/build src/WhateverGreen/build src/OpenCorePkg/UDK/Build \
+	rm -rf OpenCore-*.dmg OpenCoreEFIFolder-*.zip OpenCore-Image/ src/Lilu/build src/WhateverGreen/build src/OpenCorePkg/UDK/Build \
 		src/AppleALC/build $(KEXTS) $(DRIVERS) $(TOOLS) $(MISC)
