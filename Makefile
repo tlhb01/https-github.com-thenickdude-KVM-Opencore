@@ -21,13 +21,13 @@ MISC= \
 EFI_FILES=$(KEXTS) $(DRIVERS) $(TOOLS) $(MISC) EFI/OC/config.plist
 
 SUBMODULES = \
-	src/AppleALC \
-	src/Lilu \
-	src/WhateverGreen \
-	src/OpenCorePkg \
-	src/VirtualSMC \
-	src/OcBinaryData \
-	src/MacKernelSDK
+	src/AppleALC/README.md \
+	src/Lilu/README.md \
+	src/WhateverGreen/README.md \
+	src/OpenCorePkg/README.md \
+	src/VirtualSMC/README.md \
+	src/OcBinaryData/Resources \
+	src/MacKernelSDK/README.md
 
 # Set me to include the version number in the packaged filenames
 RELEASE_VERSION ?= master
@@ -97,7 +97,7 @@ src/VirtualSMC/build/Release/VirtualSMC.kext : src/VirtualSMC/Lilu.kext src/Virt
 EFI/OC/Kexts/Lilu.kext : src/Lilu/build/Release/Lilu.kext
 	cp -a $< $@
 
-src/Lilu/build/Release/Lilu.kext src/Lilu/build/Debug/Lilu.kext : 
+src/Lilu/build/Release/Lilu.kext src/Lilu/build/Debug/Lilu.kext : src/Lilu/MacKernelSDK 
 	cd src/Lilu && xcodebuild -configuration Debug
 	cd src/Lilu && xcodebuild -configuration Release
 
