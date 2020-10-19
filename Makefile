@@ -136,6 +136,7 @@ $(OPENCORE_UDK_BUILD_DIR)/Bootstrap.efi $(OPENCORE_UDK_BUILD_DIR)/Shell.efi \
 $(OPENCORE_UDK_BUILD_DIR)/ResetSystem.efi $(OPENCORE_UDK_BUILD_DIR)/OpenCanopy.efi \
 $(OPENCORE_UDK_BUILD_DIR)/VBoxHfs.efi \
  :
+	cd src/OpenCorePkg && patch -p1 --forward < ../0001-vboxhfs.patch || true
 	cd src/OpenCorePkg && ARCHS=X64 ./build_oc.tool --skip-package $(OPENCORE_MODE)
 
 # Tools
