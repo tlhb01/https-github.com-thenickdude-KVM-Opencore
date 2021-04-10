@@ -1,8 +1,9 @@
 # Files that will be built from source
 EFI/BOOT/BOOTx64.efi
-EFI/OC/Drivers/VBoxHfs.efi
+EFI/OC/Drivers/OpenHfsPlus.efi
 EFI/OC/Drivers/OpenRuntime.efi
 EFI/OC/Drivers/OpenCanopy.efi
+EFI/OC/Drivers/OpenPartitionDxe.efi
 EFI/OC/Kexts/Lilu.kext
 EFI/OC/Kexts/AppleALC.kext
 EFI/OC/Kexts/WhateverGreen.kext

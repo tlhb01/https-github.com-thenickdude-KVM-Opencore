@@ -5,9 +5,10 @@ KEXTS= \
 	EFI/OC/Kexts/VirtualSMC.kext
 
 DRIVERS= \
-	EFI/OC/Drivers/VBoxHfs.efi \
+	EFI/OC/Drivers/OpenHfsPlus.efi \
 	EFI/OC/Drivers/OpenRuntime.efi \
-	EFI/OC/Drivers/OpenCanopy.efi
+	EFI/OC/Drivers/OpenCanopy.efi \
+	EFI/OC/Drivers/OpenPartitionDxe.efi
 
 TOOLS = \
 	EFI/OC/Tools/Shell.efi \
@@ -51,7 +52,7 @@ OpenCore-$(RELEASE_VERSION).dmg : Makefile $(EFI_FILES)
 	rm -f $@
 	hdiutil create -layout GPTSPUD -partitionType EFI -fs "FAT32" -megabytes 150 -volname EFI $@
 	mkdir -p OpenCore-Image
-	DEV_NAME=$$(hdiutil attach -nomount -plist $@ | xpath "/plist/dict/array/dict/key[text()='content-hint']/following-sibling::string[1][text()='EFI']/../key[text()='dev-entry']/following-sibling::string[1]/text()" 2> /dev/null) && \
+	DEV_NAME=$$(hdiutil attach -nomount -plist $@ | xpath -e "/plist/dict/array/dict/key[text()='content-hint']/following-sibling::string[1][text()='EFI']/../key[text()='dev-entry']/following-sibling::string[1]/text()" 2> /dev/null) && \
 		mount -tmsdos "$$DEV_NAME" OpenCore-Image
 	cp -a EFI OpenCore-Image/
 	hdiutil detach -force OpenCore-Image
@@ -119,13 +120,10 @@ src/VirtualSMC/MacKernelSDK : src/MacKernelSDK
 EFI/OC/OpenCore.efi : $(OPENCORE_UDK_BUILD_DIR)/OpenCore.efi
 	cp -a $< $@
 
-EFI/OC/Drivers/OpenRuntime.efi : $(OPENCORE_UDK_BUILD_DIR)/OpenRuntime.efi
+EFI/OC/Drivers/OpenRuntime.efi EFI/OC/Drivers/OpenHfsPlus.efi EFI/OC/Drivers/OpenPartitionDxe.efi \
+ : $(OPENCORE_UDK_BUILD_DIR)/OpenRuntime.efi $(OPENCORE_UDK_BUILD_DIR)/OpenHfsPlus.efi $(OPENCORE_UDK_BUILD_DIR)/OpenPartitionDxe.efi
 	mkdir -p EFI/OC/Drivers
-	cp -a $< $@
-
-EFI/OC/Drivers/VBoxHfs.efi : $(OPENCORE_UDK_BUILD_DIR)/VBoxHfs.efi
-	mkdir -p EFI/OC/Drivers
-	cp -a $< $@
+	cp -a $? EFI/OC/Drivers/
 
 EFI/BOOT/BOOTx64.efi : $(OPENCORE_UDK_BUILD_DIR)/Bootstrap.efi
 	mkdir -p EFI/BOOT
@@ -134,9 +132,8 @@ EFI/BOOT/BOOTx64.efi : $(OPENCORE_UDK_BUILD_DIR)/Bootstrap.efi
 $(OPENCORE_UDK_BUILD_DIR)/OpenCore.efi $(OPENCORE_UDK_BUILD_DIR)/OpenRuntime.efi \
 $(OPENCORE_UDK_BUILD_DIR)/Bootstrap.efi $(OPENCORE_UDK_BUILD_DIR)/Shell.efi \
 $(OPENCORE_UDK_BUILD_DIR)/ResetSystem.efi $(OPENCORE_UDK_BUILD_DIR)/OpenCanopy.efi \
-$(OPENCORE_UDK_BUILD_DIR)/VBoxHfs.efi \
+$(OPENCORE_UDK_BUILD_DIR)/OpenHfsPlus.efi $(OPENCORE_UDK_BUILD_DIR)/OpenPartitionDxe.efi \
  :
-	cd src/OpenCorePkg && patch -p1 --forward < ../0001-vboxhfs.patch || true
 	cd src/OpenCorePkg && ARCHS=X64 ./build_oc.tool --skip-package $(OPENCORE_MODE)
 
 # Tools
