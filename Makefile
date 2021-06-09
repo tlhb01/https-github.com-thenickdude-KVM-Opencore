@@ -63,7 +63,7 @@ OpenCore-$(RELEASE_VERSION).iso : OpenCore-$(RELEASE_VERSION).dmg
 
 OpenCoreEFIFolder-$(RELEASE_VERSION).zip : Makefile $(EFI_FILES)
 	rm -f $@
-	zip -r $@ EFI
+	zip -X -r $@ EFI
 
 %.gz : %
 	gzip -f --keep $<
