@@ -54,6 +54,7 @@ OpenCore-$(RELEASE_VERSION).dmg : Makefile $(EFI_FILES)
 	mkdir -p OpenCore-Image
 	DEV_NAME=$$(hdiutil attach -nomount -plist $@ | xpath -e "/plist/dict/array/dict/key[text()='content-hint']/following-sibling::string[1][text()='EFI']/../key[text()='dev-entry']/following-sibling::string[1]/text()" 2> /dev/null) && \
 		mount -tmsdos "$$DEV_NAME" OpenCore-Image
+	find EFI -type f -name ".DS_Store" -delete
 	cp -a EFI OpenCore-Image/
 	hdiutil detach -force OpenCore-Image
 
@@ -63,6 +64,7 @@ OpenCore-$(RELEASE_VERSION).iso : OpenCore-$(RELEASE_VERSION).dmg
 
 OpenCoreEFIFolder-$(RELEASE_VERSION).zip : Makefile $(EFI_FILES)
 	rm -f $@
+	find EFI -type f -name ".DS_Store" -delete
 	zip -X -r $@ EFI
 
 %.gz : %
